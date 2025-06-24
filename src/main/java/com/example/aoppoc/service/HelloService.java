@@ -1,10 +1,12 @@
 package com.example.aoppoc.service;
 
+import com.example.aoppoc.annotation.TrackTime;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HelloService {
 
+  @TrackTime
   public String sayHello(String name) {
     simulateDelay();
     if ("error".equalsIgnoreCase(name)) {

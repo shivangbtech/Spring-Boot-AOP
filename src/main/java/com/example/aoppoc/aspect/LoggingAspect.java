@@ -1,5 +1,6 @@
 package com.example.aoppoc.aspect;
 
+import com.example.aoppoc.annotation.TrackTime;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -46,5 +47,17 @@ public class LoggingAspect {
   )
   public void logAfterThrowing(JoinPoint joinPoint, Throwable ex) {
     System.out.println("[@AfterThrowing] Exception in method: " + joinPoint.getSignature() + ", Message: " + ex.getMessage());
+  }
+
+  @Around("@annotation(trackTime)")
+  public Object logExecutionTime(ProceedingJoinPoint joinPoint, TrackTime trackTime) throws Throwable {
+    long start = System.currentTimeMillis();
+
+    Object result = joinPoint.proceed();
+
+    long duration = System.currentTimeMillis() - start;
+    System.out.println("[@TrackTime] " + joinPoint.getSignature() + " executed in " + duration + " ms");
+
+    return result;
   }
 }
